@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 import time
+import random #to not be detected as a bot
 
 
 load_dotenv()
@@ -53,6 +54,8 @@ driver.get('https://everytime.kr/hotarticles')
 
 def scrape_page(driver):
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "article.list")))
+     # Random delay before scraping articles
+    time.sleep(random.uniform(1, 3))
     articles = driver.find_elements(By.CSS_SELECTOR, "article.list")
     data = []
     for article in articles:
@@ -72,7 +75,8 @@ data = scrape_page(driver)
 
 # Go to the next page and scrape
 go_to_next_page(driver)
-time.sleep(5)  # Wait for the next page to load
+random_delay = random.uniform(2, 5)  # Random delay between 2 and 5 seconds
+time.sleep(random_delay)  # Wait for the next page to load with a random delay
 data.extend(scrape_page(driver))
 
 # Quit the driver
